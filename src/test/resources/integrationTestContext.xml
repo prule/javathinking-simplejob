@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd"
+       default-autowire="byName">
+
+
+    <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
+
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+                <property name="showSql" value="false"/>
+                <property name="generateDdl" value="true"/>
+                <property name="databasePlatform" value="org.hibernate.dialect.HSQLDialect"/>
+            </bean>
+        </property>
+    </bean>
+
+
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"/>
+
+    <tx:annotation-driven/>
+
+    <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
+
+
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="org.hsqldb.jdbcDriver"/>
+        <property name="url" value="jdbc:hsqldb:test/db/myDB"/>
+        <property name="username" value="sa"/>
+        <property name="password" value=""/>
+    </bean>
+
+    <context:component-scan base-package="com.javathinking"/>
+
+    <bean id="eventDao" class="com.javathinking.batch.event.EventDaoJpaImpl"/>
+    <bean id="eventService" class="com.javathinking.batch.event.EventServiceImpl"/>
+
+    <bean id="emailNotificationFactory" class="com.javathinking.batch.event.EmailNotificationFactory"/>
+    <bean id="taskManager" class="com.javathinking.batch.job.ThreadedTaskManager"/>
+    <bean id="queueDao" class="com.javathinking.batch.job.QueueDaoImpl"/>
+    <bean id="queueService" class="com.javathinking.batch.job.QueueServiceImpl"/>
+    <bean id="archiveService" class="com.javathinking.batch.support.ArchiveServiceImpl">
+        <property name="archiveDir" value="/tmp/archive"/>
+    </bean>
+
+    <bean name="emailNotificationHandler" class="com.javathinking.batch.event.EmailNotificationHandlerSpringVelocityImpl">
+        <property name="mailSender" ref="mailSender"/>
+        <property name="velocityEngine" ref="velocityEngine"/>
+    </bean>
+
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="localhost"/>
+    </bean>
+
+    <bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+        <property name="velocityProperties">
+            <value>
+                resource.loader=class
+                class.resource.loader.class=org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+            </value>
+        </property>
+    </bean>
+
+</beans>

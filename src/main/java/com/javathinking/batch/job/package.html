@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+<body>
+<h1>Job</h1>
+
+<p>
+    'Job' is a small package to aid in batch processing.
+    It aims to be simple and effective, but its simplicity may not be appropriate
+    for all projects.
+</p>
+
+<h3>Basic concepts</h3>
+
+<p>
+    Monitors are used to watch a resource - such as a directory or a database.
+</p>
+
+<p>
+    Tasks perform processing based on the inputs provided by a monitor. This is where the application
+    business logic gets invoked.
+</p>
+
+<p>A monitor and collection of tasks can be run using the TaskManager - by providing a sleep period,
+    a monitor, and a list of tasks.
+<ol>
+    <li>A thread is created which polls the monitor at the specified interval.</li>
+    <li>If the monitor returns items for processing, each task in the list is invoked in turn</li>
+    <li>If a task returns false, then processing is aborted and the remaining tasks are not run</li>
+    <li>The thread then sleeps for the specified period</li>
+</ol>
+The tasks are responsible for 'consuming' the items found by the monitors - otherwise they will be
+processed again, the next time the monitor polls.
+</p>
+<p>
+    Job comes with a Queue concept. This allows tasks to put entries on the queue, to be read
+    by a QueueMonitor (which would be associated with other tasks). This way, events can be queued for
+    consumption later. Thus if the system is shut down part way through processing, when it is restarted
+    processing will begin again.
+</p>
+
+<p>
+    The queue supports a discriminator so that if the monitor need to distinguish between various
+    types of queue entries, they can.
+</p>
+
+<p>
+    A sample application illustrating how these concepts come together into an application is available
+    in the com.javathinking.batch.example package.
+</p>
+
+<p>
+    An obvious drawback from the simplicity of this solution is that it is based on polling - a logical
+    evolution from this point would be to introduce messaging to remove the polling and have a more
+    responsive system.
+</p>
+</body>
+</html>

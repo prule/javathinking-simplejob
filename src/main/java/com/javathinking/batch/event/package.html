@@ -1,0 +1,40 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+<body>
+This package handles sending system events.
+
+Events can have multiple notifications, in which case, when the event is sent,
+each notification will be processed by an appropriate event handler.
+
+Notification classes need to be associated with a notification handler:
+<code>
+    eventService.registerNotificationHandler(EmailNotification.class,(NotificationHandler) context.getBean("emailNotificationHandler"));
+</code>
+A simple EmailNotification implementation is provided.
+
+Emails can be templated by example:
+<code>
+    EmailNotification processingFailedExampleEmail = new EmailNotification();
+    processingFailedExampleEmail.setSubject("Processing file failed");
+    processingFailedExampleEmail.addTo("admin@javathinking.com");
+    processingFailedExampleEmail.setFrom("paul@javathinking.com");
+    emailNotificationFactory.addType(PROC_FAILED_EMAIL, processingFailedExampleEmail);
+</code>
+
+When ready to send an EmailNotification, a copy of the template can be produced via
+the notification factory, and then specific properties can be set before sending:
+<code>
+    Event event = new Event(getName(), "Processing Successful", getDiscriminator());
+    EmailNotification notification = emailNotificationFactory.get(Example1.PROC_SUCCESS_EMAIL);
+    notification.setContent("Processing successful for files in "+dir+SystemUtils.LINE_SEPARATOR);
+    event.addNotification(notification);
+    eventService.send(event);
+</code>
+
+
+</body>
+</html>
