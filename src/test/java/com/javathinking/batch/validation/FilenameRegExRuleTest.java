@@ -4,21 +4,26 @@ import org.junit.Test;
 
 import java.io.File;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 /**
  * @author paul
  */
 public class FilenameRegExRuleTest {
     @Test
-    public void validate() {
+    public void whenAFileNameMatchesRegExValidationShouldPass() {
         FilenameRegExRule rule = new FilenameRegExRule("(?i)[a-z]+\\.xml$");
-        assertFalse(rule.validate(new File("h.zip")).isEmpty());
-        assertTrue(rule.validate(new File("hh.xml")).isEmpty());
-        assertTrue(rule.validate(new File("hh.XML")).isEmpty());
-        assertTrue(rule.validate(new File("h.XmL")).isEmpty());
-        assertFalse(rule.validate(new File("asdf.xml.txt")).isEmpty());
+        assertThat(rule.validate(new File("hh.xml")).isValid(), is(true));
+        assertThat(rule.validate(new File("hh.XML")).isValid(), is(true));
+        assertThat(rule.validate(new File("h.XmL")).isValid(), is(true));
+    }
+
+    @Test
+    public void whenAFileNameDoesNotMatchRegExValidationShouldFail() {
+        FilenameRegExRule rule = new FilenameRegExRule("(?i)[a-z]+\\.xml$");
+        assertThat(rule.validate(new File("h.zip")).isNotValid(), is(true));
+        assertThat(rule.validate(new File("asdf.xml.txt")).isNotValid(), is(true));
     }
 
 }

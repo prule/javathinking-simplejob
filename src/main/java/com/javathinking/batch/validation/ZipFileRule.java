@@ -9,7 +9,7 @@ import java.io.File;
 import java.text.MessageFormat;
 
 /**
- * @author paul
+ * Checks that the given zip file is a valid zip file and
  */
 public class ZipFileRule implements ValidationRule<File> {
     private static final String format1 = "Zip file {0} contained {1} files - expected {3} of {2}";

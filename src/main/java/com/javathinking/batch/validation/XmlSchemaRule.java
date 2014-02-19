@@ -21,7 +21,9 @@ import java.net.URISyntaxException;
 import java.net.URL;
 
 /**
- * @author paul
+ * Checks that a given XML file validates against the defined XSL schema.
+ *
+ * @see javax.xml.validation.Validator#validate(javax.xml.transform.Source)
  */
 public class XmlSchemaRule implements ValidationRule<File> {
     private URI schema;

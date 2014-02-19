@@ -8,7 +8,10 @@ import java.io.File;
 import java.text.MessageFormat;
 
 /**
- * @author paul
+ * Checks that the given file matches the defined pattern, using String.matches().
+ *
+ * @see java.lang.String#matches(String)
+ * @see java.util.regex.Pattern
  */
 public class FilenameRegExRule implements ValidationRule<File> {
     private String pattern;

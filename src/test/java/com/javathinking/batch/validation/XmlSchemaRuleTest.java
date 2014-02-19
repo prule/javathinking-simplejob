@@ -4,8 +4,8 @@ import com.javathinking.commons.test.TestUtil;
 import com.javathinking.commons.validation.Errors;
 import org.junit.Test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
 /**
  * @author paul
@@ -13,13 +13,23 @@ import static org.junit.Assert.assertTrue;
 public class XmlSchemaRuleTest {
 
     @Test
-    public void validate() {
+    public void aValidXmlFileShouldPassSchemaValidation() {
+        // setup
         XmlSchemaRule rule = new XmlSchemaRule(TestUtil.getFile(this, "com/javathinking/batch/validation/shiporder.xsd"));
-        Errors errors1 = rule.validate(TestUtil.getFile(this, "com/javathinking/batch/validation/shiporder.xml"));
-        assertTrue(errors1.isEmpty());
+        // perform
+        Errors errors = rule.validate(TestUtil.getFile(this, "com/javathinking/batch/validation/shiporder.xml"));
+        // assert
+        assertThat(errors.isValid(), is(true));
+    }
 
-        Errors errors2 = rule.validate(TestUtil.getFile(this, "com/javathinking/batch/validation/shiporder.invalid.xml"));
-        assertFalse(errors2.isEmpty());
+    @Test
+    public void anInvalidXmlFileShouldFailSchemaValidation() {
+        // setup
+        XmlSchemaRule rule = new XmlSchemaRule(TestUtil.getFile(this, "com/javathinking/batch/validation/shiporder.xsd"));
+        // perform
+        Errors errors = rule.validate(TestUtil.getFile(this, "com/javathinking/batch/validation/shiporder.invalid.xml"));
+        // assert
+        assertThat(errors.isNotValid(), is(true));
 
     }
 }

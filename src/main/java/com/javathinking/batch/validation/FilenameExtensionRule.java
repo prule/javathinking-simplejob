@@ -8,7 +8,8 @@ import java.io.File;
 import java.text.MessageFormat;
 
 /**
- * @author paul
+ * Checks that the given file has an extension that matches the defined extension.
+ * This check can either be case sensitive or insensitive.
  */
 public class FilenameExtensionRule implements ValidationRule<File> {
     private String extension;
