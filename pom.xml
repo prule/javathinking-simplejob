@@ -9,9 +9,9 @@
     <url>http://javathinking.com</url>
 
     <scm>
-        <connection>scm:svn:http://javathinking.googlecode.com/svn/trunk/javathinking-simplejob</connection>
-        <developerConnection>scm:svn:https://javathinking.googlecode.com/svn/trunk/javathinking-simplejob</developerConnection>
-        <url>http://code.google.com/p/javathinking/source/checkout</url>
+        <connection>scm:git:ssh://git@github.com:prule/javathinking-simplejob.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com:prule/javathinking-simplejob.git</developerConnection>
+        <url>https://github.com/prule/javathinking-simplejob.git</url>
     </scm>
 
     <build>
